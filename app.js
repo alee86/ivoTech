@@ -497,6 +497,16 @@ function init() {
             navLinks.classList.remove("open");
         });
     });
+
+    // Close mobile menu when tapping outside
+    document.addEventListener("click", (e) => {
+        if (navLinks.classList.contains("open") &&
+            !hamburger.contains(e.target) &&
+            !navLinks.contains(e.target)) {
+            hamburger.classList.remove("active");
+            navLinks.classList.remove("open");
+        }
+    });
 }
 
 document.addEventListener("DOMContentLoaded", init);
