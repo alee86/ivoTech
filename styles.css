@@ -96,10 +96,8 @@ img { max-width: 100%; display: block; }
     height: 100%; display: flex; align-items: center; justify-content: space-between;
 }
 .nav-logo { display: flex; align-items: center; gap: 8px; }
-.logo-icon { font-size: 1.5rem; }
-.logo-text { font-size: 1.35rem; font-weight: 800; color: var(--gray-900); letter-spacing: -0.5px; }
-.logo-accent { color: var(--cyan-500); }
-
+.logo-text { font-size: 1.5rem; font-weight: 500; color: var(--gray-900); letter-spacing: -0.5px; }
+.logo-bold { font-weight: 900; }
 .nav-links {
     display: flex; gap: 8px;
 }
