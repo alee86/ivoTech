@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin — IvoTech</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --blue-800: #1E40AF; --blue-700: #1d4ed8;
+            --blue-100: #dbeafe; --blue-50: #eff6ff;
+            --cyan-500: #06B6D4; --cyan-400: #22d3ee; --cyan-50: #ecfeff;
+            --gray-900: #0f172a; --gray-800: #1e293b; --gray-700: #334155;
+            --gray-600: #475569; --gray-500: #64748b; --gray-400: #94a3b8;
+            --gray-200: #e2e8f0; --gray-100: #f1f5f9; --gray-50: #f8fafc;
+            --red-500: #ef4444; --red-100: #fee2e2;
+            --green-500: #22c55e;
+            --gradient: linear-gradient(135deg, #1E40AF, #06B6D4);
+            --radius: 10px; --t: 0.2s ease;
+        }
+
+        body { font-family: 'Inter', sans-serif; background: var(--gray-50); color: var(--gray-800); min-height: 100vh; }
+        a { text-decoration: none; color: inherit; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+        input, textarea, select {
+            font-family: inherit; border: 1.5px solid var(--gray-200);
+            border-radius: var(--radius); padding: 10px 14px;
+            font-size: 0.9rem; color: var(--gray-800); background: white;
+            outline: none; transition: border-color var(--t); width: 100%;
+        }
+        input:focus, textarea:focus, select:focus {
+            border-color: var(--cyan-500);
+            box-shadow: 0 0 0 3px rgba(6,182,212,0.12);
+        }
+        textarea { resize: vertical; min-height: 80px; }
+        label {
+            display: block; font-size: 0.75rem; font-weight: 700;
+            color: var(--gray-500); margin-bottom: 6px;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+
+        /* ── LOGIN ── */
+        #login-screen {
+            min-height: 100vh; display: flex;
+            align-items: center; justify-content: center;
+            background: linear-gradient(160deg, #0f172a 0%, #1e3a8a 60%, #0e2a6b 100%);
+        }
+        .login-card {
+            background: rgba(255,255,255,0.06); backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 20px;
+            padding: 48px 40px; width: 100%; max-width: 380px; text-align: center;
+        }
+        .login-logo { font-size: 1.9rem; font-weight: 800; color: white; margin-bottom: 6px; letter-spacing: -1px; }
+        .login-logo span { color: #22d3ee; }
+        .login-subtitle { font-size: 0.78rem; color: rgba(255,255,255,0.35); margin-bottom: 36px; text-transform: uppercase; letter-spacing: 2px; }
+        .login-card input {
+            background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15);
+            color: white; text-align: center; font-size: 1.05rem; letter-spacing: 3px; margin-bottom: 14px;
+        }
+        .login-card input::placeholder { color: rgba(255,255,255,0.25); letter-spacing: 1px; }
+        .login-card input:focus { border-color: #22d3ee; background: rgba(255,255,255,0.12); }
+        .login-btn {
+            width: 100%; padding: 14px; background: var(--gradient);
+            color: white; border-radius: var(--radius); font-size: 0.95rem;
+            font-weight: 700; box-shadow: 0 4px 15px rgba(6,182,212,0.3); transition: var(--t);
+        }
+        .login-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .login-error { margin-top: 12px; font-size: 0.85rem; color: #fca5a5; display: none; }
+
+        /* ── DASHBOARD ── */
+        #admin-dashboard { display: none; flex-direction: column; min-height: 100vh; }
+
+        .admin-header {
+            height: 64px; background: white; border-bottom: 1px solid var(--gray-200);
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 24px; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+        }
+        .admin-logo { font-size: 1.2rem; font-weight: 800; color: var(--gray-900); }
+        .admin-logo span { color: var(--cyan-500); }
+        .admin-logo small { font-size: 0.68rem; font-weight: 600; color: var(--gray-400); text-transform: uppercase; letter-spacing: 1px; margin-left: 8px; }
+        .header-right { display: flex; align-items: center; gap: 10px; }
+
+        .token-pill {
+            display: flex; align-items: center; gap: 6px; font-size: 0.8rem;
+            color: var(--gray-500); padding: 7px 13px; background: var(--gray-100);
+            border-radius: 20px; cursor: pointer; transition: var(--t);
+        }
+        .token-pill:hover { background: var(--gray-200); }
+        .token-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--gray-300); transition: var(--t); }
+        .token-dot.on { background: var(--green-500); }
+
+        .btn-save {
+            display: flex; align-items: center; gap: 7px; padding: 9px 18px;
+            background: var(--gradient); color: white; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 700;
+            box-shadow: 0 2px 10px rgba(6,182,212,0.25); transition: var(--t);
+        }
+        .btn-save:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+        .btn-save:disabled { opacity: 0.45; cursor: not-allowed; }
+        .btn-logout { padding: 9px 14px; border-radius: 20px; font-size: 0.85rem; font-weight: 600; color: var(--gray-500); transition: var(--t); }
+        .btn-logout:hover { background: var(--gray-100); color: var(--gray-700); }
+
+        .admin-body { display: flex; flex: 1; height: calc(100vh - 64px); overflow: hidden; }
+
+        /* ── SIDEBAR ── */
+        .admin-sidebar {
+            width: 256px; flex-shrink: 0; background: white;
+            border-right: 1px solid var(--gray-200); display: flex;
+            flex-direction: column; overflow-y: auto;
+        }
+        .sidebar-head {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 18px 16px 10px;
+        }
+        .sidebar-title { font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--gray-400); }
+        .btn-new-cat {
+            width: 28px; height: 28px; border-radius: 8px;
+            background: var(--blue-50); color: var(--blue-800);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; font-weight: 700; transition: var(--t);
+        }
+        .btn-new-cat:hover { background: var(--blue-100); }
+
+        .cat-item {
+            display: flex; align-items: center; gap: 10px; padding: 10px 16px;
+            cursor: pointer; border-radius: 9px; margin: 2px 8px; transition: var(--t);
+        }
+        .cat-item:hover { background: var(--gray-100); }
+        .cat-item.active { background: var(--blue-50); }
+        .cat-icon { font-size: 1.25rem; flex-shrink: 0; }
+        .cat-name { flex: 1; font-size: 0.88rem; font-weight: 600; color: var(--gray-700); }
+        .cat-item.active .cat-name { color: var(--blue-800); }
+        .cat-badge {
+            font-size: 0.72rem; font-weight: 700; background: var(--gray-100);
+            color: var(--gray-500); padding: 2px 7px; border-radius: 10px;
+        }
+        .cat-item.active .cat-badge { background: var(--blue-100); color: var(--blue-700); }
+        .btn-del-cat {
+            opacity: 0; width: 22px; height: 22px; border-radius: 6px;
+            color: var(--gray-400); font-size: 0.8rem; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0; transition: var(--t);
+        }
+        .cat-item:hover .btn-del-cat { opacity: 1; }
+        .btn-del-cat:hover { background: var(--red-100); color: var(--red-500); }
+
+        /* ── MAIN ── */
+        .admin-main { flex: 1; overflow-y: auto; padding: 28px 32px; }
+        .main-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .main-title-wrap { display: flex; align-items: center; gap: 12px; }
+        .main-cat-icon { font-size: 1.7rem; }
+        .main-cat-name { font-size: 1.25rem; font-weight: 800; color: var(--gray-900); }
+        .main-cat-count { font-size: 0.8rem; color: var(--gray-400); margin-top: 2px; }
+
+        .btn-new-product {
+            display: flex; align-items: center; gap: 6px; padding: 10px 18px;
+            background: var(--gradient); color: white; border-radius: 20px;
+            font-size: 0.85rem; font-weight: 700; transition: var(--t);
+        }
+        .btn-new-product:hover { opacity: 0.9; transform: translateY(-1px); }
+
+        .products-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px;
+        }
+        .pcard {
+            background: white; border: 1.5px solid var(--gray-200); border-radius: 14px;
+            padding: 16px; transition: var(--t); position: relative;
+        }
+        .pcard:hover { border-color: var(--cyan-500); box-shadow: 0 4px 20px rgba(6,182,212,0.1); }
+        .pcard-top { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+        .pcard-emoji {
+            width: 48px; height: 48px; background: var(--gray-100); border-radius: 10px;
+            display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0;
+        }
+        .pcard-info { flex: 1; min-width: 0; }
+        .pcard-name { font-size: 0.92rem; font-weight: 700; color: var(--gray-900); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 3px; }
+        .pcard-price { font-size: 1rem; font-weight: 800; color: var(--blue-800); }
+        .pcard-price small { font-size: 0.7rem; font-weight: 600; color: var(--gray-400); }
+        .pcard-badge {
+            position: absolute; top: 12px; right: 12px; font-size: 0.63rem;
+            font-weight: 700; text-transform: uppercase; background: var(--gradient);
+            color: white; padding: 3px 8px; border-radius: 10px; letter-spacing: 0.5px;
+        }
+        .pcard-desc { font-size: 0.8rem; color: var(--gray-500); line-height: 1.5; margin-bottom: 12px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .pcard-actions { display: flex; gap: 8px; border-top: 1px solid var(--gray-100); padding-top: 12px; }
+        .btn-edit, .btn-del {
+            flex: 1; padding: 8px; border-radius: 8px; font-size: 0.8rem; font-weight: 600; transition: var(--t);
+        }
+        .btn-edit { background: var(--blue-50); color: var(--blue-800); }
+        .btn-edit:hover { background: var(--blue-100); }
+        .btn-del { background: var(--red-100); color: var(--red-500); }
+        .btn-del:hover { background: #fecaca; }
+
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--gray-400); }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 12px; }
+        .empty-state p { font-size: 0.9rem; line-height: 1.6; }
+
+        /* ── MODALS ── */
+        .modal-overlay {
+            position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+            backdrop-filter: blur(4px); z-index: 1000; display: flex;
+            align-items: center; justify-content: center; padding: 20px;
+            opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        }
+        .modal-overlay.open { opacity: 1; pointer-events: all; }
+        .modal-box {
+            background: white; border-radius: 16px; width: 100%;
+            max-width: 500px; max-height: 90vh; overflow-y: auto; padding: 28px;
+            transform: translateY(12px) scale(0.97); transition: transform 0.2s;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.18);
+        }
+        .modal-overlay.open .modal-box { transform: translateY(0) scale(1); }
+        .modal-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+        .modal-title { font-size: 1.05rem; font-weight: 800; color: var(--gray-900); }
+        .modal-x {
+            width: 32px; height: 32px; border-radius: 8px; background: var(--gray-100);
+            color: var(--gray-500); display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; transition: var(--t);
+        }
+        .modal-x:hover { background: var(--gray-200); }
+
+        .fg { margin-bottom: 14px; }
+        .fg-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+        .specs-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 8px; }
+        .spec-row { display: flex; gap: 8px; }
+        .spec-row input { flex: 1; }
+        .btn-del-spec {
+            width: 36px; height: 36px; border-radius: 8px; background: var(--red-100);
+            color: var(--red-500); display: flex; align-items: center; justify-content: center;
+            font-size: 1rem; flex-shrink: 0; transition: var(--t);
+        }
+        .btn-del-spec:hover { background: #fecaca; }
+        .btn-add-spec { font-size: 0.82rem; font-weight: 600; color: var(--cyan-500); transition: var(--t); }
+        .btn-add-spec:hover { color: var(--cyan-400); }
+
+        .modal-foot { display: flex; gap: 10px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--gray-100); }
+        .btn-cancel {
+            flex: 1; padding: 12px; border-radius: var(--radius); font-size: 0.9rem;
+            font-weight: 600; color: var(--gray-500); background: var(--gray-100); transition: var(--t);
+        }
+        .btn-cancel:hover { background: var(--gray-200); }
+        .btn-confirm {
+            flex: 2; padding: 12px; border-radius: var(--radius); font-size: 0.9rem;
+            font-weight: 700; color: white; background: var(--gradient); transition: var(--t);
+            box-shadow: 0 2px 10px rgba(6,182,212,0.25);
+        }
+        .btn-confirm:hover { opacity: 0.9; }
+
+        .token-help {
+            font-size: 0.82rem; color: var(--gray-500); line-height: 1.65;
+            background: var(--gray-50); border-radius: var(--radius);
+            padding: 13px 15px; margin-top: 12px; border: 1px solid var(--gray-200);
+        }
+        .token-help code { background: var(--gray-200); padding: 1px 5px; border-radius: 4px; font-size: 0.8rem; }
+
+        /* ── TOAST ── */
+        #toast {
+            position: fixed; bottom: 24px; right: 24px; padding: 13px 18px;
+            border-radius: 12px; font-size: 0.88rem; font-weight: 600; color: white;
+            z-index: 9999; transform: translateY(70px); opacity: 0;
+            transition: all 0.28s cubic-bezier(.4,0,.2,1); max-width: 300px;
+        }
+        #toast.show { transform: translateY(0); opacity: 1; }
+        #toast.success { background: #15803d; }
+        #toast.error { background: #b91c1c; }
+        #toast.info { background: var(--blue-800); }
+
+        /* ── SPINNER ── */
+        .spin { width: 14px; height: 14px; border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%; display: none; }
+        .spin.on { display: block; animation: rot 0.6s linear infinite; }
+        @keyframes rot { to { transform: rotate(360deg); } }
+
+        @media (max-width: 768px) {
+            .admin-sidebar { display: none; }
+            .admin-main { padding: 16px; }
+            .fg-row { grid-template-columns: 1fr; }
+            .modal-box { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ══════ LOGIN ══════ -->
+<div id="login-screen">
+    <div class="login-card">
+        <div class="login-logo">⚡ Ivo<span>Tech</span></div>
+        <div class="login-subtitle">Panel de administración</div>
+        <input type="password" id="login-pw" placeholder="Contraseña" autocomplete="current-password">
+        <button class="login-btn" id="login-btn">Ingresar</button>
+        <p class="login-error" id="login-err">Contraseña incorrecta</p>
+    </div>
+</div>
+
+<!-- ══════ DASHBOARD ══════ -->
+<div id="admin-dashboard">
+
+    <header class="admin-header">
+        <div class="admin-logo">⚡ Ivo<span>Tech</span> <small>Admin</small></div>
+        <div class="header-right">
+            <div class="token-pill" id="token-pill">
+                <div class="token-dot" id="token-dot"></div>
+                <span id="token-label">Configurar token</span>
+            </div>
+            <button class="btn-save" id="btn-save" disabled>
+                <div class="spin" id="save-spin"></div>
+                <span id="save-label">Guardar en GitHub</span>
+            </button>
+            <button class="btn-logout" id="btn-logout">Salir</button>
+        </div>
+    </header>
+
+    <div class="admin-body">
+
+        <aside class="admin-sidebar">
+            <div class="sidebar-head">
+                <span class="sidebar-title">Categorías</span>
+                <button class="btn-new-cat" id="btn-new-cat" title="Nueva categoría">+</button>
+            </div>
+            <div id="cat-list"></div>
+        </aside>
+
+        <main class="admin-main">
+            <div class="main-head">
+                <div class="main-title-wrap">
+                    <span class="main-cat-icon" id="main-icon">📦</span>
+                    <div>
+                        <div class="main-cat-name" id="main-name">Seleccioná una categoría</div>
+                        <div class="main-cat-count" id="main-count"></div>
+                    </div>
+                </div>
+                <button class="btn-new-product" id="btn-new-product" style="display:none">+ Agregar producto</button>
+            </div>
+            <div class="products-grid" id="pgrid">
+                <div class="empty-state">
+                    <div class="empty-state-icon">👈</div>
+                    <p>Seleccioná una categoría<br>del panel izquierdo</p>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+
+<!-- ══════ MODAL: TOKEN ══════ -->
+<div class="modal-overlay" id="modal-token">
+    <div class="modal-box" style="max-width:440px">
+        <div class="modal-head">
+            <span class="modal-title">🔑 Token de GitHub</span>
+            <button class="modal-x" data-close="modal-token">×</button>
+        </div>
+        <div class="fg">
+            <label>Personal Access Token</label>
+            <input type="password" id="token-input" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+        </div>
+        <div class="token-help">
+            <strong>¿Cómo crear el token?</strong><br><br>
+            1. Ir a <strong>github.com → Settings → Developer settings → Personal access tokens → Fine-grained tokens</strong><br>
+            2. Click en <strong>Generate new token</strong><br>
+            3. En <em>Repository access</em>, elegir solo el repo <code>ivoTech</code><br>
+            4. En <em>Permissions → Contents</em>, elegir <strong>Read and Write</strong><br>
+            5. Generar y copiar el token aquí.<br><br>
+            El token se guarda solo mientras tengas el navegador abierto.
+        </div>
+        <div class="modal-foot">
+            <button class="btn-cancel" data-close="modal-token">Cancelar</button>
+            <button class="btn-confirm" id="btn-save-token">Guardar token</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════ MODAL: PRODUCTO ══════ -->
+<div class="modal-overlay" id="modal-product">
+    <div class="modal-box">
+        <div class="modal-head">
+            <span class="modal-title" id="product-modal-title">Nuevo producto</span>
+            <button class="modal-x" data-close="modal-product">×</button>
+        </div>
+
+        <div class="fg-row">
+            <div class="fg">
+                <label>Emoji</label>
+                <input type="text" id="p-img" placeholder="🎧" maxlength="4">
+            </div>
+            <div class="fg">
+                <label>Badge <span style="font-weight:400;text-transform:none">(opcional)</span></label>
+                <input type="text" id="p-badge" placeholder="Nuevo, Popular...">
+            </div>
+        </div>
+
+        <div class="fg">
+            <label>Nombre del producto *</label>
+            <input type="text" id="p-name" placeholder="Ej: JBL Tune 110">
+        </div>
+
+        <div class="fg-row">
+            <div class="fg">
+                <label>Precio *</label>
+                <input type="number" id="p-price" placeholder="18500" min="0">
+            </div>
+            <div class="fg">
+                <label>Moneda</label>
+                <select id="p-currency">
+                    <option value="ARS">ARS — Peso argentino</option>
+                    <option value="USD">USD — Dólar</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="fg">
+            <label>Descripción</label>
+            <textarea id="p-desc" placeholder="Descripción del producto..."></textarea>
+        </div>
+
+        <div class="fg">
+            <label>Especificaciones</label>
+            <div class="specs-list" id="specs-list"></div>
+            <button class="btn-add-spec" id="btn-add-spec">+ Agregar especificación</button>
+        </div>
+
+        <div class="modal-foot">
+            <button class="btn-cancel" data-close="modal-product">Cancelar</button>
+            <button class="btn-confirm" id="btn-save-product">Guardar producto</button>
+        </div>
+    </div>
+</div>
+
+<!-- ══════ MODAL: CATEGORÍA ══════ -->
+<div class="modal-overlay" id="modal-cat">
+    <div class="modal-box" style="max-width:360px">
+        <div class="modal-head">
+            <span class="modal-title">Nueva categoría</span>
+            <button class="modal-x" data-close="modal-cat">×</button>
+        </div>
+        <div class="fg-row">
+            <div class="fg">
+                <label>Emoji / Icono</label>
+                <input type="text" id="c-icon" placeholder="🎧" maxlength="4">
+            </div>
+            <div class="fg">
+                <label>Nombre *</label>
+                <input type="text" id="c-name" placeholder="Auriculares">
+            </div>
+        </div>
+        <div class="modal-foot">
+            <button class="btn-cancel" data-close="modal-cat">Cancelar</button>
+            <button class="btn-confirm" id="btn-save-cat">Crear categoría</button>
+        </div>
+    </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════════
+   IvoTech Admin Panel
+   ══════════════════════════════════════════════
+   CONTRASEÑA: cambiar ADMIN_PASSWORD abajo ↓
+   ══════════════════════════════════════════════ */
+
+const ADMIN_PASSWORD = 'ivotech2026';   // ← Cambiá la contraseña aquí
+const GH_OWNER  = 'alee86';
+const GH_REPO   = 'ivoTech';
+const GH_FILE   = 'catalog.json';
+const GH_BRANCH = 'main';
+
+// ── State ──────────────────────────────────────
+let catalog    = null;
+let fileSHA    = null;
+let activeCat  = null;
+let editingId  = null;   // null = nuevo producto
+let dirty      = false;
+
+// ── DOM refs ───────────────────────────────────
+const loginScreen  = document.getElementById('login-screen');
+const dashboard    = document.getElementById('admin-dashboard');
+const tokenDot     = document.getElementById('token-dot');
+const tokenLabel   = document.getElementById('token-label');
+const btnSave      = document.getElementById('btn-save');
+const saveLabel    = document.getElementById('save-label');
+const saveSpin     = document.getElementById('save-spin');
+const catList      = document.getElementById('cat-list');
+const pgrid        = document.getElementById('pgrid');
+
+// ── Helpers ────────────────────────────────────
+const getToken  = () => sessionStorage.getItem('gh_token');
+const b64enc    = s => btoa(unescape(encodeURIComponent(s)));
+const b64dec    = s => decodeURIComponent(escape(atob(s.replace(/\n/g, ''))));
+const fmtPrice  = n => Number(n).toLocaleString('es-AR');
+const slugify   = s => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+                        .replace(/[^a-z0-9\s]/g, '').trim().replace(/\s+/g, '-');
+
+function setDirty() {
+    dirty = true;
+    if (getToken()) btnSave.disabled = false;
+}
+
+// ── Toast ──────────────────────────────────────
+let toastT;
+function toast(msg, type = 'info') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `show ${type}`;
+    clearTimeout(toastT);
+    toastT = setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+// ── Modal helpers ──────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); document.body.style.overflow = 'hidden'; }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); document.body.style.overflow = ''; }
+
+document.querySelectorAll('[data-close]').forEach(b => b.addEventListener('click', () => closeModal(b.dataset.close)));
+document.querySelectorAll('.modal-overlay').forEach(o => o.addEventListener('click', e => { if (e.target === o) closeModal(o.id); }));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => closeModal(m.id)); });
+
+// ── Login ──────────────────────────────────────
+function doLogin() {
+    if (document.getElementById('login-pw').value === ADMIN_PASSWORD) {
+        loginScreen.style.display = 'none';
+        dashboard.style.display = 'flex';
+        document.getElementById('login-err').style.display = 'none';
+        updateTokenStatus();
+        loadCatalog();
+    } else {
+        document.getElementById('login-err').style.display = 'block';
+        document.getElementById('login-pw').value = '';
+    }
+}
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('login-pw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+document.getElementById('btn-logout').addEventListener('click', () => {
+    if (dirty && !confirm('Hay cambios sin guardar. ¿Salir?')) return;
+    loginScreen.style.display = 'flex';
+    dashboard.style.display = 'none';
+    document.getElementById('login-pw').value = '';
+    catalog = null; fileSHA = null; activeCat = null; dirty = false;
+});
+
+// ── Token ──────────────────────────────────────
+function updateTokenStatus() {
+    const t = getToken();
+    tokenDot.className = 'token-dot' + (t ? ' on' : '');
+    tokenLabel.textContent = t ? 'Token activo' : 'Configurar token';
+    btnSave.disabled = !(t && dirty);
+}
+
+document.getElementById('token-pill').addEventListener('click', () => {
+    const t = getToken();
+    if (t) document.getElementById('token-input').value = t;
+    openModal('modal-token');
+});
+
+document.getElementById('btn-save-token').addEventListener('click', async () => {
+    const val = document.getElementById('token-input').value.trim();
+    if (!val) { toast('Ingresá un token válido', 'error'); return; }
+    sessionStorage.setItem('gh_token', val);
+    closeModal('modal-token');
+    updateTokenStatus();
+    toast('Token guardado', 'success');
+    if (!catalog) await loadCatalog();
+    else if (dirty) btnSave.disabled = false;
+    // Get SHA now that we have a token
+    if (catalog && !fileSHA) await fetchSHA();
+});
+
+// ── Load catalog ───────────────────────────────
+async function loadCatalog() {
+    try {
+        const token = getToken();
+        let data;
+
+        if (token) {
+            // Use API to get content + SHA in one call
+            const res = await fetch(
+                `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+                { headers: { 'Authorization': `Bearer ${token}`, 'Cache-Control': 'no-cache' } }
+            );
+            if (res.status === 401) { toast('Token inválido o sin permisos', 'error'); openModal('modal-token'); return; }
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const file = await res.json();
+            fileSHA = file.sha;
+            data = JSON.parse(b64dec(file.content));
+        } else {
+            // Public read — no SHA (can view but not save)
+            const url = `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${GH_FILE}?t=${Date.now()}`;
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            data = await res.json();
+            toast('Modo lectura — ingresá tu token para guardar cambios', 'info');
+        }
+
+        catalog = data;
+        renderSidebar();
+        if (catalog.categories.length) selectCat(catalog.categories[0].id);
+    } catch (e) {
+        toast('Error cargando catálogo: ' + e.message, 'error');
+    }
+}
+
+async function fetchSHA() {
+    const token = getToken();
+    if (!token || !catalog) return;
+    try {
+        const res = await fetch(
+            `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+            { headers: { 'Authorization': `Bearer ${token}` } }
+        );
+        if (res.ok) fileSHA = (await res.json()).sha;
+    } catch (_) {}
+}
+
+// ── Save to GitHub ─────────────────────────────
+document.getElementById('btn-save').addEventListener('click', saveToGitHub);
+
+async function saveToGitHub() {
+    const token = getToken();
+    if (!token) { openModal('modal-token'); return; }
+    if (!fileSHA) await fetchSHA();
+
+    btnSave.disabled = true;
+    saveLabel.textContent = 'Guardando...';
+    saveSpin.classList.add('on');
+
+    try {
+        const content = b64enc(JSON.stringify(catalog, null, 4));
+        const res = await fetch(
+            `https://api.github.com/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_FILE}`,
+            {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    message: 'Admin: actualizar catálogo de productos',
+                    content,
+                    sha: fileSHA,
+                    branch: GH_BRANCH
+                })
+            }
+        );
+
+        if (res.status === 401) throw new Error('Token inválido o sin permisos');
+        if (res.status === 409) throw new Error('Conflicto — recargá la página e intentá de nuevo');
+        if (!res.ok) throw new Error(`Error ${res.status}`);
+
+        const result = await res.json();
+        fileSHA = result.content.sha;
+        dirty = false;
+        toast('✓ Guardado. GitHub Pages se actualiza en ~1 min', 'success');
+    } catch (e) {
+        toast('Error al guardar: ' + e.message, 'error');
+        btnSave.disabled = false;
+    } finally {
+        saveLabel.textContent = 'Guardar en GitHub';
+        saveSpin.classList.remove('on');
+    }
+}
+
+// ── Sidebar ────────────────────────────────────
+function renderSidebar() {
+    catList.innerHTML = catalog.categories.map(cat => `
+        <div class="cat-item ${cat.id === activeCat ? 'active' : ''}" data-id="${cat.id}">
+            <span class="cat-icon">${cat.icon}</span>
+            <span class="cat-name">${cat.name}</span>
+            <span class="cat-badge">${cat.products.length}</span>
+            <button class="btn-del-cat" data-cat="${cat.id}" title="Eliminar">✕</button>
+        </div>
+    `).join('');
+
+    catList.querySelectorAll('.cat-item').forEach(item => {
+        item.addEventListener('click', e => {
+            if (e.target.closest('.btn-del-cat')) return;
+            selectCat(item.dataset.id);
+        });
+    });
+    catList.querySelectorAll('.btn-del-cat').forEach(btn => {
+        btn.addEventListener('click', e => { e.stopPropagation(); deleteCat(btn.dataset.cat); });
+    });
+}
+
+function selectCat(id) {
+    activeCat = id;
+    renderSidebar();
+    renderProducts();
+}
+
+// ── Products ───────────────────────────────────
+function renderProducts() {
+    const cat = catalog?.categories.find(c => c.id === activeCat);
+    if (!cat) return;
+
+    document.getElementById('main-icon').textContent = cat.icon;
+    document.getElementById('main-name').textContent = cat.name;
+    document.getElementById('main-count').textContent = `${cat.products.length} producto${cat.products.length !== 1 ? 's' : ''}`;
+    document.getElementById('btn-new-product').style.display = 'flex';
+
+    if (!cat.products.length) {
+        pgrid.innerHTML = `<div class="empty-state"><div class="empty-state-icon">📦</div><p>Sin productos en esta categoría.<br>Agregá el primero.</p></div>`;
+        return;
+    }
+
+    pgrid.innerHTML = cat.products.map(p => `
+        <div class="pcard">
+            ${p.badge ? `<span class="pcard-badge">${p.badge}</span>` : ''}
+            <div class="pcard-top">
+                <div class="pcard-emoji">${p.image}</div>
+                <div class="pcard-info">
+                    <div class="pcard-name">${p.name}</div>
+                    <div class="pcard-price">$${fmtPrice(p.price)} <small>${p.currency}</small></div>
+                </div>
+            </div>
+            <p class="pcard-desc">${p.description}</p>
+            <div class="pcard-actions">
+                <button class="btn-edit" data-id="${p.id}">✏ Editar</button>
+                <button class="btn-del" data-id="${p.id}">🗑 Eliminar</button>
+            </div>
+        </div>
+    `).join('');
+
+    pgrid.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', () => openProductModal(b.dataset.id)));
+    pgrid.querySelectorAll('.btn-del').forEach(b => b.addEventListener('click', () => deleteProduct(b.dataset.id)));
+}
+
+// ── Product modal ──────────────────────────────
+document.getElementById('btn-new-product').addEventListener('click', () => openProductModal(null));
+
+function openProductModal(productId) {
+    editingId = productId;
+    document.getElementById('product-modal-title').textContent = productId ? 'Editar producto' : 'Nuevo producto';
+
+    const p = productId
+        ? catalog.categories.find(c => c.id === activeCat).products.find(pr => pr.id === productId)
+        : { image: '', badge: '', name: '', price: '', currency: 'ARS', description: '', specs: [] };
+
+    document.getElementById('p-img').value       = p.image       || '';
+    document.getElementById('p-badge').value     = p.badge       || '';
+    document.getElementById('p-name').value      = p.name        || '';
+    document.getElementById('p-price').value     = p.price       || '';
+    document.getElementById('p-currency').value  = p.currency    || 'ARS';
+    document.getElementById('p-desc').value      = p.description || '';
+    renderSpecsList(p.specs || []);
+    openModal('modal-product');
+}
+
+function renderSpecsList(specs) {
+    const c = document.getElementById('specs-list');
+    c.innerHTML = specs.map(s => `
+        <div class="spec-row">
+            <input type="text" value="${s.replace(/"/g, '&quot;')}" placeholder="Especificación...">
+            <button class="btn-del-spec">✕</button>
+        </div>
+    `).join('');
+    c.querySelectorAll('.btn-del-spec').forEach(b => b.addEventListener('click', () => b.closest('.spec-row').remove()));
+}
+
+document.getElementById('btn-add-spec').addEventListener('click', () => {
+    const c = document.getElementById('specs-list');
+    const row = document.createElement('div');
+    row.className = 'spec-row';
+    row.innerHTML = `<input type="text" placeholder="Especificación..."><button class="btn-del-spec">✕</button>`;
+    row.querySelector('.btn-del-spec').addEventListener('click', () => row.remove());
+    c.appendChild(row);
+    row.querySelector('input').focus();
+});
+
+document.getElementById('btn-save-product').addEventListener('click', () => {
+    const name  = document.getElementById('p-name').value.trim();
+    const price = parseFloat(document.getElementById('p-price').value);
+    if (!name)            { toast('El nombre es obligatorio', 'error'); return; }
+    if (isNaN(price)||price<0) { toast('Ingresá un precio válido', 'error'); return; }
+
+    const badge = document.getElementById('p-badge').value.trim();
+    const specs = [...document.getElementById('specs-list').querySelectorAll('input')]
+        .map(i => i.value.trim()).filter(Boolean);
+
+    const product = {
+        id: editingId || slugify(name) + '-' + Date.now().toString(36),
+        name, price,
+        currency:    document.getElementById('p-currency').value,
+        image:       document.getElementById('p-img').value.trim() || '📦',
+        description: document.getElementById('p-desc').value.trim(),
+        specs,
+        ...(badge ? { badge } : {})
+    };
+
+    const cat = catalog.categories.find(c => c.id === activeCat);
+    if (editingId) {
+        const idx = cat.products.findIndex(p => p.id === editingId);
+        cat.products[idx] = product;
+    } else {
+        cat.products.push(product);
+    }
+
+    closeModal('modal-product');
+    renderSidebar();
+    renderProducts();
+    setDirty();
+    toast(editingId ? 'Producto actualizado' : 'Producto agregado', 'success');
+});
+
+function deleteProduct(id) {
+    if (!confirm('¿Eliminar este producto?')) return;
+    const cat = catalog.categories.find(c => c.id === activeCat);
+    cat.products = cat.products.filter(p => p.id !== id);
+    renderSidebar();
+    renderProducts();
+    setDirty();
+    toast('Producto eliminado', 'info');
+}
+
+// ── Category modal ─────────────────────────────
+document.getElementById('btn-new-cat').addEventListener('click', () => {
+    document.getElementById('c-icon').value = '';
+    document.getElementById('c-name').value = '';
+    openModal('modal-cat');
+});
+
+document.getElementById('btn-save-cat').addEventListener('click', () => {
+    const name = document.getElementById('c-name').value.trim();
+    const icon = document.getElementById('c-icon').value.trim() || '📦';
+    if (!name) { toast('El nombre es obligatorio', 'error'); return; }
+
+    const id = slugify(name);
+    if (catalog.categories.find(c => c.id === id)) { toast('Ya existe esa categoría', 'error'); return; }
+
+    catalog.categories.push({ id, name, icon, products: [] });
+    closeModal('modal-cat');
+    renderSidebar();
+    selectCat(id);
+    setDirty();
+    toast('Categoría creada', 'success');
+});
+
+function deleteCat(id) {
+    const cat = catalog.categories.find(c => c.id === id);
+    if (!cat) return;
+    if (!confirm(`¿Eliminar la categoría "${cat.name}" y todos sus productos?`)) return;
+    catalog.categories = catalog.categories.filter(c => c.id !== id);
+    if (activeCat === id) {
+        activeCat = catalog.categories[0]?.id || null;
+        if (activeCat) renderProducts();
+        else {
+            document.getElementById('main-icon').textContent = '📦';
+            document.getElementById('main-name').textContent = 'Sin categorías';
+            document.getElementById('main-count').textContent = '';
+            document.getElementById('btn-new-product').style.display = 'none';
+            pgrid.innerHTML = '';
+        }
+    }
+    renderSidebar();
+    setDirty();
+    toast('Categoría eliminada', 'info');
+}
+</script>
+
+</body>
+</html>

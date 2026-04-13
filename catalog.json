@@ -1,0 +1,209 @@
+{
+    "categories": [
+        {
+            "id": "auriculares",
+            "name": "Auriculares",
+            "icon": "🎧",
+            "products": [
+                {
+                    "id": "jbl-tune-110",
+                    "name": "JBL Tune 110",
+                    "price": 18500,
+                    "currency": "ARS",
+                    "image": "🎧",
+                    "badge": "Popular",
+                    "description": "Auriculares in-ear con sonido potente JBL Pure Bass. Cable plano anti-enredo, ligeros y cómodos para uso diario.",
+                    "specs": [
+                        "Driver de 9mm",
+                        "Respuesta de frecuencia: 20Hz – 20kHz",
+                        "Micrófono integrado con botón",
+                        "Cable plano anti-enredo",
+                        "Conector Jack 3.5mm"
+                    ]
+                },
+                {
+                    "id": "xaea-thunder",
+                    "name": "XAEA Thunder",
+                    "price": 12000,
+                    "currency": "ARS",
+                    "image": "🎧",
+                    "description": "Auriculares con graves profundos y diseño ergonómico. Ideales para escuchar música y gaming casual.",
+                    "specs": [
+                        "Driver de 10mm de alta definición",
+                        "Respuesta de frecuencia: 18Hz – 22kHz",
+                        "Micrófono omnidireccional",
+                        "Almohadillas de silicona intercambiables (S/M/L)",
+                        "Cable reforzado de 1.2m"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "cables",
+            "name": "Cables",
+            "icon": "🔌",
+            "products": [
+                {
+                    "id": "cable-lightning",
+                    "name": "Cable Lightning 1m",
+                    "price": 8500,
+                    "currency": "ARS",
+                    "image": "🔌",
+                    "description": "Cable Lightning certificado para carga y sincronización de dispositivos Apple. Carga rápida y transferencia de datos estable.",
+                    "specs": [
+                        "Longitud: 1 metro",
+                        "Conector Lightning a USB-A",
+                        "Carga rápida hasta 2.4A",
+                        "Recubrimiento de nylon trenzado",
+                        "Compatible con iPhone/iPad/iPod"
+                    ]
+                },
+                {
+                    "id": "cable-type-c",
+                    "name": "Cable USB Type-C 1m",
+                    "price": 7000,
+                    "currency": "ARS",
+                    "image": "🔌",
+                    "badge": "Nuevo",
+                    "description": "Cable Type-C de alta velocidad para carga y datos. Compatible con la mayoría de dispositivos Android modernos.",
+                    "specs": [
+                        "Longitud: 1 metro",
+                        "Conector USB-C a USB-A",
+                        "Carga rápida hasta 3A",
+                        "Transferencia de datos hasta 480Mbps",
+                        "Carcasa de aluminio reforzada"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "cargadores",
+            "name": "Cargadores",
+            "icon": "🔋",
+            "products": [
+                {
+                    "id": "xaea-optimum",
+                    "name": "XAEA Optimum Charger",
+                    "price": 15000,
+                    "currency": "ARS",
+                    "image": "🔋",
+                    "badge": "Top Ventas",
+                    "description": "Cargador de pared de carga rápida con doble puerto USB. Protección contra sobrecarga y sobrecalentamiento.",
+                    "specs": [
+                        "Potencia: 18W carga rápida",
+                        "Doble puerto USB-A",
+                        "Protección inteligente IC",
+                        "Entrada: 100-240V",
+                        "Compacto y portátil"
+                    ]
+                },
+                {
+                    "id": "xaea-type-c-charger",
+                    "name": "XAEA Cargador Type-C",
+                    "price": 14000,
+                    "currency": "ARS",
+                    "image": "🔋",
+                    "description": "Cargador compacto con puerto USB-C de carga rápida 20W. Compatible con Power Delivery para carga optimizada.",
+                    "specs": [
+                        "Potencia: 20W PD",
+                        "Puerto USB-C Power Delivery",
+                        "Compatible con QC 3.0",
+                        "Diseño compacto plegable",
+                        "Indicador LED de carga"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "fundas",
+            "name": "Fundas",
+            "icon": "📱",
+            "products": [
+                {
+                    "id": "funda-magsafe",
+                    "name": "Funda MagSafe Premium",
+                    "price": 22000,
+                    "currency": "ARS",
+                    "image": "📱",
+                    "badge": "Premium",
+                    "description": "Funda con imanes MagSafe integrados para carga inalámbrica. Material de silicona suave con interior de microfibra.",
+                    "specs": [
+                        "Compatible con carga MagSafe",
+                        "Silicona líquida premium",
+                        "Interior de microfibra",
+                        "Protección ante caídas de 1.5m",
+                        "Disponible para iPhone 13/14/15"
+                    ]
+                },
+                {
+                    "id": "funda-metalizada",
+                    "name": "Funda Metalizada Elite",
+                    "price": 16000,
+                    "currency": "ARS",
+                    "image": "📱",
+                    "description": "Funda con acabado metalizado espejado de alta resistencia. Efecto cromado que destaca con estilo único.",
+                    "specs": [
+                        "Acabado cromado espejado",
+                        "Policarbonato reforzado",
+                        "Bordes elevados para cámara y pantalla",
+                        "Ultra delgada: 1.2mm",
+                        "Compatible con carga inalámbrica"
+                    ]
+                }
+            ]
+        },
+        {
+            "id": "smartwatch",
+            "name": "Smartwatch",
+            "icon": "⌚",
+            "products": [
+                {
+                    "id": "amazfit-bip-5",
+                    "name": "Amazfit Bip 5",
+                    "price": 85000,
+                    "currency": "ARS",
+                    "image": "⌚",
+                    "badge": "Destacado",
+                    "description": "Smartwatch con pantalla ultra grande de 1.91\", GPS integrado, más de 120 modos deportivos y hasta 10 días de batería.",
+                    "specs": [
+                        "Pantalla AMOLED de 1.91\"",
+                        "GPS integrado de doble banda",
+                        "Resistencia al agua 5 ATM",
+                        "Batería de hasta 10 días",
+                        "Sensor SpO2 y ritmo cardíaco 24/7"
+                    ]
+                },
+                {
+                    "id": "redmi-watch-4",
+                    "name": "Redmi Watch 4",
+                    "price": 72000,
+                    "currency": "ARS",
+                    "image": "⌚",
+                    "description": "Smartwatch con pantalla AMOLED de 1.97\", cuerpo de aleación de aluminio, GPS y llamadas Bluetooth.",
+                    "specs": [
+                        "Pantalla AMOLED de 1.97\"",
+                        "Cuerpo de aleación de aluminio",
+                        "Llamadas Bluetooth",
+                        "Más de 150 modos deportivos",
+                        "Batería de hasta 20 días"
+                    ]
+                },
+                {
+                    "id": "xiaomi-band-8",
+                    "name": "Xiaomi Smart Band 8",
+                    "price": 38000,
+                    "currency": "ARS",
+                    "image": "⌚",
+                    "description": "Pulsera inteligente con pantalla AMOLED de 1.62\", más de 150 esferas de reloj, monitoreo de salud completo.",
+                    "specs": [
+                        "Pantalla AMOLED de 1.62\"",
+                        "Más de 150 esferas personalizables",
+                        "Resistencia al agua 5 ATM",
+                        "Monitoreo de SpO2 y sueño",
+                        "Batería de hasta 16 días"
+                    ]
+                }
+            ]
+        }
+    ]
+}
