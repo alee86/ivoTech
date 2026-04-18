@@ -1,0 +1,16 @@
+{
+  "name": "ivotech",
+  "version": "1.0.0",
+  "description": "Catálogo de productos tecnológicos IvoTech",
+  "main": "app.js",
+  "scripts": {
+    "dev": "http-server -p 8000 -o",
+    "start": "http-server -p 8000"
+  },
+  "keywords": ["ecommerce", "tech", "catalog"],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}

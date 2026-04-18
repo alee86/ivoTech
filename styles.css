@@ -637,6 +637,30 @@ img { max-width: 100%; display: block; }
 
 
 /* ════════════════════════════
+   FLOATING WHATSAPP
+   ════════════════════════════ */
+.floating-whatsapp {
+    position: fixed; bottom: 28px; right: 28px; z-index: 500;
+    width: 56px; height: 56px; border-radius: 50%;
+    background: #25D366; color: white;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 20px rgba(37,211,102,0.35);
+    transition: var(--transition);
+    animation: float-wa 3s ease-in-out infinite;
+}
+.floating-whatsapp:hover {
+    transform: scale(1.12);
+    box-shadow: 0 6px 28px rgba(37,211,102,0.45);
+}
+.floating-whatsapp svg { width: 24px; height: 24px; }
+
+@keyframes float-wa {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+
+/* ════════════════════════════
    ANIMATIONS
    ════════════════════════════ */
 @keyframes fadeInUp {
@@ -690,6 +714,8 @@ img { max-width: 100%; display: block; }
     :root { --nav-height: 64px; }
 
     .section-container { padding: 0 16px; }
+
+    .floating-whatsapp { bottom: 20px; right: 20px; width: 52px; height: 52px; }
 
     /* Menú móvil */
     .nav-links {
@@ -752,6 +778,9 @@ img { max-width: 100%; display: block; }
 /* ─── Mobile pequeño (≤ 480px) ─── */
 @media (max-width: 480px) {
     .section-container { padding: 0 12px; }
+
+    .floating-whatsapp { bottom: 16px; right: 16px; width: 48px; height: 48px; }
+    .floating-whatsapp svg { width: 20px; height: 20px; }
 
     /* Hero */
     .hero-container { padding: 40px 12px; }
